@@ -1,0 +1,91 @@
+<%- include('header') %>
+
+    <div class="recipe-form-container">
+        <h1>Add New Recipe</h1>
+
+        <% if (typeof message !=='undefined' && message) { %>
+            <div class="alert alert-info">
+                <%= message %>
+            </div>
+            <% } %>
+
+                <form method="POST" action="/recipe/add" class="recipe-form">
+                    <div class="form-section">
+                        <h2>Basic Information</h2>
+
+                        <div class="form-group">
+                            <label for="name">Recipe Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="difficulty">Difficulty *</label>
+                                <select id="difficulty" name="difficulty" required>
+                                    <option value="">Select difficulty</option>
+                                    <option value="Easy">Easy</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Hard">Hard</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="serves">Serves *</label>
+                                <input type="number" id="serves" name="serves" min="1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="prepTime">Prep Time (minutes) *</label>
+                                <input type="number" id="prepTime" name="prepTime" min="0" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cookTime">Cook Time (minutes) *</label>
+                                <input type="number" id="cookTime" name="cookTime" min="0" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="recipeLink">Recipe Link (optional)</label>
+                            <input type="url" id="recipeLink" name="recipeLink"
+                                placeholder="https://example.com/recipe">
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Ingredients</h2>
+                        <div id="ingredients-list">
+                            <div class="ingredient-item">
+                                <input type="text" name="ingredients[0][name]" placeholder="Ingredient name"
+                                    class="ingredient-input">
+                                <input type="number" name="ingredients[0][quantity]" placeholder="Quantity" step="0.1"
+                                    class="ingredient-input">
+                                <input type="text" name="ingredients[0][unit]" placeholder="Unit (cups, g, etc.)"
+                                    class="ingredient-input">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addIngredient()">+ Add
+                            Ingredient</button>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Instructions</h2>
+                        <div id="instructions-list">
+                            <textarea name="instructions[0]" placeholder="Step 1: Instructions..."
+                                class="instruction-textarea"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addInstruction()">+ Add Step</button>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Recipe</button>
+                        <a href="/dashboard" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+    </div>
+
+    <script src="/js/recipe-form.js"></script>
+
+    <%- include('footer') %>

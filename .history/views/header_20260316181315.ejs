@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= typeof title !=='undefined' ? title : 'Meal Suggestion App' %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="navbar-logo">🍽️ MealFinder</a>
+            <ul class="nav-menu">
+                <% if (typeof isAuthenticated !=='undefined' && isAuthenticated) { %>
+                    <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+                    <li><a href="/suggestion" class="nav-link">Get Suggestion</a></li>
+                    <li><a href="/logout" class="nav-link">Logout</a></li>
+                    <% } else { %>
+                        <li><a href="/login" class="nav-link">Login</a></li>
+                        <li><a href="/signup" class="nav-link">Sign Up</a></li>
+                        <% } %>
+            </ul>
+        </div>
+    </nav>
+
+    <main>

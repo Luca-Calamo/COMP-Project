@@ -1,0 +1,43 @@
+<%- include('header') %>
+
+    <div class="home-container">
+        <div class="hero-section">
+            <h1 class="hero-title">MealFinder</h1>
+            <p class="hero-subtitle">Can't decide what to cook? Let us help!</p>
+
+            <% if (typeof isAuthenticated !=='undefined' && isAuthenticated) { %>
+                <div class="button-group">
+                    <a href="/suggestion" class="btn btn-primary">Get a Recipe Suggestion</a>
+                    <a href="/dashboard" class="btn btn-secondary">Manage My Recipes</a>
+                </div>
+                <% } else { %>
+                    <div class="button-group">
+                        <a href="/signup" class="btn btn-primary">Get Started</a>
+                        <a href="/login" class="btn btn-secondary">Sign In</a>
+                    </div>
+                    <% } %>
+        </div>
+
+        <div class="features-section">
+            <h2>How It Works</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Add Your Recipes</h3>
+                    <p>Create and manage your own recipe collection with ingredients and instructions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎲</div>
+                    <h3>Get Suggestions</h3>
+                    <p>Click a button to get random recipe suggestions from your collection.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Filter by Time</h3>
+                    <p>Filter suggestions by difficulty level and cooking time to fit your needs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('footer') %>

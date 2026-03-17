@@ -1,0 +1,104 @@
+<%- include('header') %>
+
+    <div class="recipe-form-container">
+        <h1>Edit Recipe</h1>
+
+        <% if (typeof message !=='undefined' && message) { %>
+            <div class="alert alert-info">
+                <%= message %>
+            </div>
+            <% } %>
+
+                <form method="POST" action="/recipe/update/<%= recipe.id %>" class="recipe-form">
+                    <div class="form-section">
+                        <h2>Basic Information</h2>
+
+                        <div class="form-group">
+                            <label for="name">Recipe Name *</label>
+                            <input type="text" id="name" name="name" value="<%= recipe.name %>" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="difficulty">Difficulty *</label>
+                                <select id="difficulty" name="difficulty" required>
+                                    <option value="">Select difficulty</option>
+                                    <option value="Easy" <% if (recipe.difficulty==='Easy' ) { %>selected<% } %>>Easy
+                                    </option>
+                                    <option value="Medium" <% if (recipe.difficulty==='Medium' ) { %>selected<% } %>
+                                            >Medium</option>
+                                    <option value="Hard" <% if (recipe.difficulty==='Hard' ) { %>selected<% } %>>Hard
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="serves">Serves *</label>
+                                <input type="number" id="serves" name="serves" min="1" value="<%= recipe.serves %>"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="prepTime">Prep Time (minutes) *</label>
+                                <input type="number" id="prepTime" name="prepTime" min="0"
+                                    value="<%= recipe.prep_time %>" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cookTime">Cook Time (minutes) *</label>
+                                <input type="number" id="cookTime" name="cookTime" min="0"
+                                    value="<%= recipe.cook_time %>" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="recipeLink">Recipe Link (optional)</label>
+                            <input type="url" id="recipeLink" name="recipeLink" value="<%= recipe.recipe_link || '' %>">
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Ingredients</h2>
+                        <div id="ingredients-list">
+                            <% ingredients.forEach((ingredient, index)=> { %>
+                                <div class="ingredient-item">
+                                    <input type="text" name="ingredients[<%= index %>][name]"
+                                        value="<%= ingredient.name %>" placeholder="Ingredient name"
+                                        class="ingredient-input">
+                                    <input type="number" name="ingredients[<%= index %>][quantity]"
+                                        value="<%= ingredient.quantity %>" placeholder="Quantity" step="0.1"
+                                        class="ingredient-input">
+                                    <input type="text" name="ingredients[<%= index %>][unit]"
+                                        value="<%= ingredient.unit %>" placeholder="Unit (cups, g, etc.)"
+                                        class="ingredient-input">
+                                </div>
+                                <% }); %>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addIngredient()">+ Add
+                            Ingredient</button>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Instructions</h2>
+                        <div id="instructions-list">
+                            <% instructions.forEach((instruction, index)=> { %>
+                                <textarea name="instructions[<%= index %>]"
+                                    placeholder="Step <%= instruction.step_number %>: Instructions..."
+                                    class="instruction-textarea"><%= instruction.instruction %></textarea>
+                                <% }); %>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addInstruction()">+ Add Step</button>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Update Recipe</button>
+                        <a href="/dashboard" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+    </div>
+
+    <script src="/js/recipe-form.js"></script>
+
+    <%- include('footer') %>

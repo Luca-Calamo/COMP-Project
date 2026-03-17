@@ -1,0 +1,89 @@
+<%- include('header') %>
+
+    <div class="recipe-detail-container">
+        <div class="recipe-detail-header">
+            <h1>
+                <%= recipe.name %>
+            </h1>
+            <span class="difficulty-badge difficulty-<%= recipe.difficulty.toLowerCase() %>">
+                <%= recipe.difficulty %>
+            </span>
+        </div>
+
+        <div class="recipe-info-grid">
+            <div class="recipe-info-item">
+                <span class="info-label">⏱️ Prep Time:</span>
+                <span class="info-value">
+                    <%= recipe.prep_time %> min
+                </span>
+            </div>
+            <div class="recipe-info-item">
+                <span class="info-label">🔥 Cook Time:</span>
+                <span class="info-value">
+                    <%= recipe.cook_time %> min
+                </span>
+            </div>
+            <div class="recipe-info-item">
+                <span class="info-label">⏲️ Total Time:</span>
+                <span class="info-value">
+                    <%= recipe.total_time %> min
+                </span>
+            </div>
+            <div class="recipe-info-item">
+                <span class="info-label">👥 Serves:</span>
+                <span class="info-value">
+                    <%= recipe.serves %> people
+                </span>
+            </div>
+        </div>
+
+        <% if (recipe.recipe_link) { %>
+            <div class="recipe-link">
+                <a href="<%= recipe.recipe_link %>" target="_blank" class="btn btn-secondary">View Full Recipe</a>
+            </div>
+            <% } %>
+
+                <div class="recipe-section">
+                    <h2>Ingredients</h2>
+                    <ul class="ingredients-list">
+                        <% ingredients.forEach(ingredient=> { %>
+                            <li>
+                                <input type="checkbox">
+                                <span>
+                                    <%= ingredient.name %>
+                                </span>
+                                <% if (ingredient.quantity) { %>
+                                    <span class="ingredient-amount">
+                                        <%= ingredient.quantity %>
+                                            <%= ingredient.unit || '' %>
+                                    </span>
+                                    <% } %>
+                            </li>
+                            <% }); %>
+                    </ul>
+                </div>
+
+                <div class="recipe-section">
+                    <h2>Instructions</h2>
+                    <ol class="instructions-list">
+                        <% instructions.forEach(instruction=> { %>
+                            <li>
+                                <input type="checkbox">
+                                <span>
+                                    <%= instruction.instruction %>
+                                </span>
+                            </li>
+                            <% }); %>
+                    </ol>
+                </div>
+
+                <div class="recipe-actions">
+                    <a href="/recipe/edit/<%= recipe.id %>" class="btn btn-secondary">Edit Recipe</a>
+                    <button onclick="deleteRecipe(<%= recipe.id %>)" class="btn btn-danger">Delete Recipe</button>
+                    <a href="/dashboard" class="btn">Back to Dashboard</a>
+                </div>
+    </div>
+
+    <script src="/js/recipe-detail.js"></script>
+
+    <%- include('footer') %>
