@@ -178,12 +178,10 @@ router.post('/recipe/update/:id', isAuthenticated, async (req, res) => {
         );
 
         if (recipeCheck.rows.length === 0) {
-            return res
-                .status(403)
-                .render('error', {
-                    isAuthenticated: req.session.userId,
-                    message: 'Unauthorized',
-                });
+            return res.status(403).render('error', {
+                isAuthenticated: req.session.userId,
+                message: 'Unauthorized',
+            });
         }
 
         await client.query('BEGIN');
@@ -337,7 +335,11 @@ router.post('/api/suggestion', isAuthenticated, async (req, res) => {
             params.push(parseInt(maxTime));
         }
 
-        // Exclude already suggested recipes
+        // First, check how many recipes match the filters (before excluding suggested)
+        const filteredRecipesResult = await pool.query(query, params);
+        const totalFilteredRecipes = filteredRecipesResult.rows.length;
+
+        // Now exclude already suggested recipes
         if (req.session.suggestedRecipes.length > 0) {
             const placeholders = req.session.suggestedRecipes
                 .map((_, i) => `$${paramCount + i + 1}`)
@@ -350,26 +352,21 @@ router.post('/api/suggestion', isAuthenticated, async (req, res) => {
 
         // If no recipes available
         if (result.rows.length === 0) {
-            // Check if all recipes have been suggested
-            const allRecipes = await pool.query(
-                'SELECT id FROM recipes WHERE user_id = $1',
-                [req.session.userId],
-            );
-
-            if (
-                allRecipes.rows.length === req.session.suggestedRecipes.length
-            ) {
+            // Check if NO recipes exist that match the filters
+            if (totalFilteredRecipes === 0) {
                 return res.json({
                     recipe: null,
-                    allSuggested: true,
-                    message:
-                        'You have seen all recipes! Click continue to cycle through again.',
+                    noRecipesMatch: true,
+                    message: 'No recipes match your filters.',
                 });
             }
 
+            // All filtered recipes have been suggested
             return res.json({
                 recipe: null,
-                message: 'No recipes match your filters.',
+                allSuggested: true,
+                message:
+                    'You have seen all recipes! Click continue to cycle through again.',
             });
         }
 

@@ -21,6 +21,8 @@ async function getSuggestion() {
         if (!data.success) {
             if (data.allSuggested) {
                 showAllSeenModal();
+            } else if (data.noRecipesMatch) {
+                showNoRecipesMatchModal();
             } else {
                 displayMessage(
                     data.message || 'No recipes match your filters.',
@@ -45,6 +47,7 @@ async function getSuggestion() {
 
 function displayRecipeSuggestion(recipe) {
     const suggestionDisplay = document.getElementById('suggestion-display');
+    const recipeNavigation = document.getElementById('recipe-navigation');
 
     let ingredientsList = '';
     recipe.ingredients.forEach((ingredient) => {
@@ -97,13 +100,17 @@ function displayRecipeSuggestion(recipe) {
       </div>
 
       ${recipe.recipe_link ? `<p style="margin-bottom: 1rem;"><a href="${recipe.recipe_link}" target="_blank" class="btn btn-secondary">View Full Recipe</a></p>` : ''}
+    </div>
+  `;
 
+    // Show navigation buttons at the top
+    recipeNavigation.innerHTML = `
       <div class="suggestion-actions">
         <a href="/recipe/${recipe.id}" class="btn btn-primary">Make This Recipe</a>
         <button onclick="getSuggestion()" class="btn btn-secondary">Get Another</button>
       </div>
-    </div>
-  `;
+    `;
+    recipeNavigation.style.display = 'block';
 }
 
 function displayMessage(message) {
@@ -154,12 +161,19 @@ function showAllSeenModal() {
     document.getElementById('allSeenModal').style.display = 'flex';
 }
 
+function showNoRecipesMatchModal() {
+    document.getElementById('noRecipesMatchModal').style.display = 'flex';
+}
+
 function closeModal() {
     document.getElementById('allSeenModal').style.display = 'none';
+    document.getElementById('noRecipesMatchModal').style.display = 'none';
 }
 
 async function continueSuggestions() {
     closeModal();
+    suggestionHistory = [];
+    updateHistory();
     try {
         await fetch('/api/reset-suggestion', {method: 'POST'});
         getSuggestion();
@@ -170,8 +184,12 @@ async function continueSuggestions() {
 
 // Close modal when clicking outside
 window.onclick = function (event) {
-    const modal = document.getElementById('allSeenModal');
-    if (event.target === modal) {
+    const allSeenModal = document.getElementById('allSeenModal');
+    const noRecipesMatchModal = document.getElementById('noRecipesMatchModal');
+    if (event.target === allSeenModal) {
+        closeModal();
+    }
+    if (event.target === noRecipesMatchModal) {
         closeModal();
     }
 };

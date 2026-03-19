@@ -21,8 +21,8 @@
             </div>
         </div>
 
-        <div id="suggestion-display" class="suggestion-display">
-            <p>Click "Get Suggestion" to start!</p>
+        <div id="recipe-navigation" style="display: none; margin-bottom: 2rem;">
+            <!-- Navigation buttons will be inserted here -->
         </div>
 
         <div id="suggestion-history" class="suggestion-history">
@@ -30,6 +30,10 @@
             <div id="history-list" class="history-list">
                 <p>No suggestions yet</p>
             </div>
+        </div>
+
+        <div id="suggestion-display" class="suggestion-display">
+            <p>Click "Get Suggestion" to start!</p>
         </div>
 
         <a href="/dashboard" class="btn btn-secondary">Back to My Recipes</a>
@@ -44,6 +48,18 @@
             <div class="modal-actions">
                 <button onclick="continueSuggestions()" class="btn btn-primary">Continue</button>
                 <button onclick="closeModal()" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for no recipes matching filters -->
+    <div id="noRecipesMatchModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>No recipes match your filters</h2>
+            <p>There are no recipes in your collection that match the selected filters. Try adjusting your difficulty
+                level or time limit.</p>
+            <div class="modal-actions">
+                <button onclick="closeModal()" class="btn btn-primary">OK</button>
             </div>
         </div>
     </div>
