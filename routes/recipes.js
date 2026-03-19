@@ -17,18 +17,22 @@ router.get('/dashboard', isAuthenticated, async (req, res) => {
         );
 
         res.render('dashboard', {
+            isAuthenticated: req.session.userId,
             user: req.session.email,
             recipes: recipes.rows,
         });
     } catch (error) {
         console.error('Dashboard error:', error);
-        res.render('dashboard', {message: 'Error loading recipes'});
+        res.render('dashboard', {
+            isAuthenticated: req.session.userId,
+            message: 'Error loading recipes',
+        });
     }
 });
 
 // GET add recipe page
 router.get('/recipe/add', isAuthenticated, (req, res) => {
-    res.render('add-recipe');
+    res.render('add-recipe', {isAuthenticated: req.session.userId});
 });
 
 // POST add recipe
@@ -102,7 +106,10 @@ router.post('/recipe/add', isAuthenticated, async (req, res) => {
     } catch (error) {
         await client.query('ROLLBACK');
         console.error('Add recipe error:', error);
-        res.render('add-recipe', {message: 'Error adding recipe'});
+        res.render('add-recipe', {
+            isAuthenticated: req.session.userId,
+            message: 'Error adding recipe',
+        });
     } finally {
         client.release();
     }
@@ -133,13 +140,17 @@ router.get('/recipe/edit/:id', isAuthenticated, async (req, res) => {
         );
 
         res.render('edit-recipe', {
+            isAuthenticated: req.session.userId,
             recipe: recipe.rows[0],
             ingredients: ingredients.rows,
             instructions: instructions.rows,
         });
     } catch (error) {
         console.error('Edit recipe page error:', error);
-        res.status(500).render('error', {message: 'Error loading recipe'});
+        res.status(500).render('error', {
+            isAuthenticated: req.session.userId,
+            message: 'Error loading recipe',
+        });
     }
 });
 
@@ -167,7 +178,12 @@ router.post('/recipe/update/:id', isAuthenticated, async (req, res) => {
         );
 
         if (recipeCheck.rows.length === 0) {
-            return res.status(403).render('error', {message: 'Unauthorized'});
+            return res
+                .status(403)
+                .render('error', {
+                    isAuthenticated: req.session.userId,
+                    message: 'Unauthorized',
+                });
         }
 
         await client.query('BEGIN');
@@ -231,7 +247,10 @@ router.post('/recipe/update/:id', isAuthenticated, async (req, res) => {
     } catch (error) {
         await client.query('ROLLBACK');
         console.error('Update recipe error:', error);
-        res.status(500).render('error', {message: 'Error updating recipe'});
+        res.status(500).render('error', {
+            isAuthenticated: req.session.userId,
+            message: 'Error updating recipe',
+        });
     } finally {
         client.release();
     }
@@ -276,6 +295,7 @@ router.get('/suggestion', isAuthenticated, async (req, res) => {
         }
 
         res.render('suggestion', {
+            isAuthenticated: req.session.userId,
             filters: {
                 difficulty: req.query.difficulty || '',
                 maxTime: req.query.maxTime || '',
@@ -284,6 +304,7 @@ router.get('/suggestion', isAuthenticated, async (req, res) => {
     } catch (error) {
         console.error('Suggestion page error:', error);
         res.status(500).render('error', {
+            isAuthenticated: req.session.userId,
             message: 'Error loading suggestion page',
         });
     }
