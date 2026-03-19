@@ -43,7 +43,7 @@ router.post('/login', isNotAuthenticated, async (req, res) => {
         req.session.userId = user.id;
         req.session.email = user.email;
 
-        res.redirect('/dashboard');
+        res.redirect('/');
     } catch (error) {
         console.error('Login error:', error);
         res.render('login', {message: 'An error occurred during login'});

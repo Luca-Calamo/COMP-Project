@@ -138,6 +138,15 @@ footer {
     background-color: #c0392b;
 }
 
+.btn-warning {
+    background-color: #f39c12;
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #d68910;
+}
+
 /* Forms */
 .form-group {
     margin-bottom: 1.5rem;
