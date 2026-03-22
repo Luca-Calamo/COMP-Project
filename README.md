@@ -1,153 +1,134 @@
 # MealFinder - Full Stack Meal Suggestion Web Application
 
-## Project Overview
+## Team Contributions
 
-MealFinder is a full-stack web application that helps users decide what to cook when they're unsure. Users can create, manage, and get random suggestions from their personal recipe collection. The app features filtering by difficulty level and cooking time to match user preferences.
+| **Luca** | Sign-up/Login authentication, user authentication middleware, and database user management
+| **Ubin** | Recipe creation feature and recipe dashboard display (Read & Create operations)  
+| **Leana** | Recipe updating and deletion functionality (Update & Delete operations)
+| **Hyde** | Recipe suggestion engine with filtering and randomization logic
 
-## Features
+## How to Run the Application Locally
 
-### User Management
+### Quick Setup - Copy to Copilot (Automated)
 
-- User registration with email and password
-- Secure login/logout functionality
-- Per-user recipe collection
+**Instructions for Instructor**: Copy the following text and paste it into Copilot/ChatGPT. It will automate most of the setup process. You only need to have PostgreSQL installed and running beforehand.
 
-### Recipe Management
+---
 
-- **Add Recipes**: Create recipes with detailed information
-- **Update Recipes**: Edit existing recipes
-- **Delete Recipes**: Remove recipes from collection
-- **View Recipes**: See full recipe details with ingredients and instructions
+**Copilot Setup Instructions** (Copy from here):
 
-### Recipe Suggestion System
+I need to set up a Node.js web application called MealFinder. The project folder is already downloaded. Please help me complete these automated setup steps in order. I'm using Windows PowerShell.
 
-- **Random Suggestions**: Get random recipe suggestions from your collection
-- **Filtering Options**: Filter by difficulty level (Easy, Medium, Hard) and maximum cooking time
-- **Session History**: View all suggestions from the current session
-- **Smart Cycling**: When all recipes have been suggested, get a popup option to cycle through again
-
-### Recipe Components
-
-- Recipe name
-- Difficulty level (Easy, Medium, Hard)
-- Prep time (minutes)
-- Cook time (minutes)
-- Total time (auto-calculated)
-- Number of servings
-- Ingredients list (name, quantity, unit)
-- Step-by-step instructions
-- Optional link to external recipe source
-
-## Technology Stack
-
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **Backend**: Node.js, Express.js
-- **Templating**: EJS
-- **Database**: PostgreSQL (Supabase)
-- **Authentication**: bcryptjs for password hashing
-- **Session Management**: express-session
-
-## Project Structure
+1. First, create a `.env` file in the project root with these contents:
 
 ```
-meal-suggestion-app/
-├── config/
-│   └── db.js                 # Database connection
-├── middleware/
-│   └── auth.js               # Authentication middleware
-├── public/
-│   ├── css/
-│   │   └── style.css         # Main stylesheet
-│   └── js/
-│       ├── suggestion.js     # Suggestion feature logic
-│       ├── recipe-form.js    # Recipe form handling
-│       ├── dashboard.js      # Dashboard functionality
-│       └── recipe-detail.js  # Recipe detail page logic
-├── routes/
-│   ├── auth.js               # Authentication routes (login, signup, logout)
-│   └── recipes.js            # Recipe CRUD and suggestion routes
-├── views/
-│   ├── header.ejs            # Navigation header
-│   ├── footer.ejs            # Footer
-│   ├── index.ejs             # Home page
-│   ├── login.ejs             # Login page
-│   ├── signup.ejs            # Sign up page
-│   ├── dashboard.ejs         # Recipe dashboard
-│   ├── add-recipe.ejs        # Add recipe form
-│   ├── edit-recipe.ejs       # Edit recipe form
-│   ├── recipe-detail.ejs     # Recipe detail view
-│   ├── suggestion.ejs        # Suggestion interface
-│   ├── 404.ejs               # 404 error page
-│   └── error.ejs             # Error page
-├── .env.example              # Environment variables template
-├── init-db.js                # Database initialization script
-├── server.js                 # Main application server
-├── package.json              # Project dependencies
-└── README.md                 # This file
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=mealfinder
+SESSION_SECRET=your_secret_key_12345
+PORT=3000
 ```
 
-## Installation & Setup
+2. Create a PostgreSQL database called `mealfinder` by running this command:
+
+```
+createdb mealfinder
+```
+
+3. Install all npm dependencies:
+
+```
+npm install
+```
+
+4. Initialize the database tables:
+
+```
+node init-db.js
+```
+
+5. Start the application:
+
+```
+npm start
+```
+
+The application should now be running at http://localhost:3000
+
+---
+
+**Note**: Replace `postgres` in `DB_PASSWORD` if you set a different password during PostgreSQL installation. If the `createdb` command fails, use pgAdmin to create the database manually.
+
+---
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- npm or yarn
-- PostgreSQL account (Supabase recommended)
-- Git
+Make sure you have the following installed on your system:
 
-### Step 1: Clone or Download the Project
+- **Node.js (v14 or higher)** - [Download here](https://nodejs.org/)
+- **npm** - Comes with Node.js
+- **PostgreSQL (v12 or higher)** - [Download here](https://www.postgresql.org/download/)
+
+If you don't have PostgreSQL installed, please download and install it before proceeding.
+
+### Step 1: Download and Navigate to the Project
+
+1. Download or clone the project to your local machine
+2. Open a terminal (Command Prompt, PowerShell, or Git Bash)
+3. Navigate to the project directory:
 
 ```bash
-cd c:\School\COMP\project
+cd path/to/meal-suggestion-app
 ```
 
-### Step 2: Install Dependencies
+### Step 2: Create the PostgreSQL Database
+
+1. Open **pgAdmin** (the PostgreSQL admin tool) or use the PostgreSQL command line
+2. Create a new database called `mealfinder`:
+    - **In pgAdmin**: Right-click on "Databases" → Create → Database → Name it `mealfinder`
+    - **In Command Line**: Run `createdb mealfinder`
+
+### Step 3: Set Up Environment Variables
+
+1. In the project root directory, create a file named `.env` (with no extension)
+2. Add the following environment variables to the `.env` file:
+
+```
+DB_USER=postgres
+DB_PASSWORD=your_postgres_password
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=mealfinder
+SESSION_SECRET=your_secret_key_here
+PORT=3000
+```
+
+**Important**: Replace the following with your actual values:
+
+- `your_postgres_password` - The password you set when installing PostgreSQL (default is usually `postgres`)
+- `your_secret_key_here` - Can be any random string (used for session encryption)
+
+### Step 4: Install Dependencies
+
+In your terminal, run:
 
 ```bash
 npm install
 ```
 
-This will install all required packages:
+This will install all required packages listed in `package.json`.
 
-- express: Web framework
-- ejs: Templating engine
-- pg: PostgreSQL client
-- bcryptjs: Password hashing
-- express-session: Session management
-- dotenv: Environment variables
-- body-parser: middleware for parsing request bodies
+### Step 5: Initialize the Database Tables
 
-### Step 3: Setup Environment Variables
-
-1. Copy `.env.example` to `.env`:
-
-```bash
-cp .env.example .env
-```
-
-2. Edit `.env` and add your Supabase credentials:
-
-```env
-DB_USER=postgres
-DB_PASSWORD=your_supabase_password
-DB_HOST=db.ezjqguafvzggmwhrcgtt.supabase.co
-DB_PORT=5432
-DB_NAME=postgres
-SESSION_SECRET=your_secure_random_string_here
-NODE_ENV=development
-```
-
-**Important**: Keep your `.env` file private and never commit it to version control!
-
-### Step 4: Initialize the Database
-
-Run the database initialization script to create all necessary tables:
+Run the database initialization script to create all required tables:
 
 ```bash
 node init-db.js
 ```
 
-You should see output confirming table creation:
+You should see output like:
 
 ```
 ✓ Users table created
@@ -155,34 +136,106 @@ You should see output confirming table creation:
 ✓ Ingredients table created
 ✓ Instructions table created
 ✓ Recipe tags table created
+✓ Session table created
 
 ✅ Database initialization complete!
 ```
 
-### Step 5: Start the Server
+### Step 6: Start the Application
 
-For development with auto-reload:
-
-```bash
-npm run dev
-```
-
-Or to start normally:
+To start the application, run:
 
 ```bash
 npm start
 ```
 
-The server will run on `http://localhost:3000`
+Or, if you want to use development mode with auto-reload (requires nodemon):
 
-## Usage
+```bash
+npm run dev
+```
 
-### Creating an Account
+The application will start and you should see:
 
-1. Visit http://localhost:3000
-2. Click "Sign Up" or "Get Started"
-3. Enter your email and password
-4. Click "Sign Up" to create your account
+```
+Server is running on http://localhost:3000
+```
+
+### Step 7: Access the Application
+
+Open your web browser and navigate to:
+
+```
+http://localhost:3000
+```
+
+You should see the MealFinder home page. You can now:
+
+1. Sign up for a new account
+2. Log in with your credentials
+3. Start adding recipes to your collection
+4. Use the suggestion feature to get random recipe ideas
+
+---
+
+## Troubleshooting
+
+**Issue: "Error: connect ECONNREFUSED (Connection refused)"**
+
+- **Solution**: Make sure PostgreSQL is running. Start the PostgreSQL service on your system.
+
+**Issue: "Error: password authentication failed for user 'postgres'"**
+
+- **Solution**: Check your `.env` file and make sure `DB_PASSWORD` matches your PostgreSQL password.
+
+**Issue: "Database 'mealfinder' does not exist"**
+
+- **Solution**: Make sure you created the `mealfinder` database in pgAdmin or command line before running `init-db.js`.
+
+**Issue: "Cannot find module" error**
+
+- **Solution**: Run `npm install` again to ensure all dependencies are installed.
+
+---
+
+## Project Structure
+
+```
+meal-suggestion-app/
+├── config/
+│   └── db.js                 # PostgreSQL database connection configuration
+├── middleware/
+│   └── auth.js               # Authentication middleware for route protection
+├── public/
+│   ├── css/
+│   │   └── style.css         # Application styling
+│   └── js/
+│       ├── suggestion.js     # Suggestion engine frontend logic
+│       ├── recipe-form.js    # Recipe form handling
+│       ├── dashboard.js      # Dashboard functionality
+│       └── recipe-detail.js  # Recipe detail page interactions
+├── routes/
+│   ├── auth.js               # Sign-up, login, logout routes
+│   └── recipes.js            # Recipe CRUD and suggestion API routes
+├── views/
+│   ├── header.ejs            # Navigation header
+│   ├── footer.ejs            # Footer
+│   ├── index.ejs             # Home page
+│   ├── login.ejs             # Login page
+│   ├── signup.ejs            # Sign-up page
+│   ├── dashboard.ejs         # User's recipe dashboard
+│   ├── add-recipe.ejs        # Add recipe form
+│   ├── edit-recipe.ejs       # Edit recipe form
+│   ├── recipe-detail.ejs     # Recipe detail view
+│   ├── suggestion.ejs        # Suggestion interface
+│   ├── 404.ejs               # 404 error page
+│   └── error.ejs             # Error page
+├── .env                      # Environment variables (create this - not included)
+├── init-db.js                # Database table initialization script
+├── server.js                 # Main Express application server
+├── package.json              # Project dependencies and scripts
+└── README.md                 # This file
+```
 
 ### Adding Recipes
 
